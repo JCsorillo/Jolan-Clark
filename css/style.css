@@ -360,6 +360,7 @@ span{
         display: none; /* Hide navbar by default on mobile */
         flex-direction: column; /* Stack items vertically */
         width: 100%;
+        text-align: center;
         background: rgba(0, 0, 0, 0.8);
         position: absolute;
         top: 100%;
