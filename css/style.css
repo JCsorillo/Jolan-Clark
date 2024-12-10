@@ -133,7 +133,7 @@ span{
     padding: 20px 5%;
 }
 .home-content{
-    max-width: 800px;
+    max-width: 100%;
 }
 .home-content h3{
     font-size: 42px;
@@ -147,7 +147,7 @@ span{
     margin: 25px 0 30px;
 }
 .btn-box{
-    width: 345px;
+    width: 340px;
     display: flex;
     gap: 2em;
 }
