@@ -147,14 +147,14 @@ span{
     margin: 25px 0 30px;
 }
 .btn-box{
-    max-width: 350px;
+    width: 350px;
     display: flex;
     gap: 2em;
 }
 
 .btn-1{
     padding: 15px 28px;
-    max-width: 100%;
+    width: 95%;
     background-color: black;
     color: white;
     border: 2px solid transparent;
