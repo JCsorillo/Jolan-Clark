@@ -176,6 +176,11 @@ span{
 .btn-1 a{
     text-decoration: none;
     color: white;
+        padding: 10px 15px; /* Add padding to increase touch target size */
+    display: inline-block; /* Ensure the link behaves like a block element */
+    margin: 10px; /* Add margin for spacing between elements */
+    text-align: center; /* Center the text */
+    font-size: 16px; /* Ensure the font size is readable */
 }
 
 .btn-1 a:hover{
