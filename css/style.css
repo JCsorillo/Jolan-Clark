@@ -1,3 +1,4 @@
+
 *{
     margin: 0;
     padding: 0;
@@ -133,7 +134,7 @@ span{
     padding: 20px 5%;
 }
 .home-content{
-    max-width: 100%;
+    max-width: 800px;
 }
 .home-content h3{
     font-size: 42px;
