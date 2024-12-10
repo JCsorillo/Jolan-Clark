@@ -498,11 +498,11 @@ span{
 }
 
 /* h4 a */
-h4 a {
+.para a {
     text-decoration: none; /* Remove underline */
     color: inherit; /* Use the inherited color from the parent element */
 }
 
-h4 a:hover {
+.para a:hover {
     color: orangered; /* Change to your desired hover color */
 }
