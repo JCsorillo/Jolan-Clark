@@ -147,7 +147,7 @@ span{
     margin: 25px 0 30px;
 }
 .btn-box{
-    max-width: 95%;
+    max-width: 350px;
     display: flex;
     gap: 2em;
 }
