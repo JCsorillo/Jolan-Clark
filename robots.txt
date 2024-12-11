@@ -1,11 +1,4 @@
-User -agent: Googlebot
-Disallow: /private/
-Disallow: /tmp/
-Allow: /
-
 User -agent: *
-Disallow: /private/
-Disallow: /tmp/
 Allow: /
 
 Sitemap: https://jolanclarksorillo.site/sitemap.xml
