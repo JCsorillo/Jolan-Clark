@@ -567,7 +567,7 @@ span{
     flex-direction: column; /* Stack items vertically */
     align-items: center; /* Center items horizontally */
     text-align: center; /* Center text */
-    max-width: 800px; /* Set a max width for the container */
+    max-width: 1000px; /* Set a max width for the container */
     margin: 0 auto; /* Center the container */
     padding: 20px; /* Add some padding */
     background-color: white; /* Background color for the container */
