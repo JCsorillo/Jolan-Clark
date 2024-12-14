@@ -612,3 +612,24 @@ span{
 .para a:hover {
     color: orangered; /* Change to your desired hover color */
 }
+
+/* FAQ */
+.faq {
+    background-color: black; /* Light background for contrast */
+    padding: 20px;
+    text-align: center;
+}
+
+.faq h2 {
+    text-align: center;
+    color: white;
+}
+
+.faq h3 {
+    color: #c0392b; /* Change to your preferred color */
+}
+
+.faq p {
+    color: whitesmoke;
+    line-height: 1.6;
+}
