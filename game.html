@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Math Game - Test your addition skills!">
-    <meta name="keywords" content="Math Game, Addition, Score Recorder">
+    <meta name="description" content="Math Game - Test your skills!">
+    <meta name="keywords" content="Math Game, Score Recorder">
     <meta name="author" content="Jolan Clark Sorillo">
     <title>Math Game</title>
     <link rel="stylesheet" href="css/style.css"> <!-- Link to your CSS file -->
@@ -17,121 +17,162 @@
         }
         .container {
             background: white;
-            padding: 40px; /* Increased padding for a larger feel */
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px; /* Increased max-width for a larger container */
+            padding: 60px; /* Increased padding */
+            border-radius: 12px; /* Slightly larger border radius */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Slightly larger shadow */
+            max-width: 800px; /* Increased max width */
             margin: auto;
         }
         h1 {
             color: #333;
-            font-size: 2em; /* Increased font size for the title */
+            font-size: 2.5em; /* Increased font size */
+        }
+        #question {
+            font-size: 2em; /* Increased font size for the question */
+            margin: 20px 0; /* Added margin for spacing */
         }
         input[type="number"] {
-            padding: 15px; /* Increased padding for input */
+            padding: 15px;
             width: 100%;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
-            font-size: 1.2em; /* Increased font size for input */
+            font-size: 1.5em; /* Increased font size */
         }
         button {
-            padding: 15px 20px; /* Increased padding for button */
+            padding: 15px 20px;
             background-color: #c0392b;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 1.2em; /* Increased font size for button */
+            font-size: 1.5em; /* Increased font size */
         }
         button:hover {
             background-color: #e74c3c;
         }
         .score {
-            font-size: 24px; /* Increased font size for score display */
+            font-size: 28px; /* Increased font size */
             margin-top: 20px;
         }
-        /* Navigation Styles */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px 12%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
-        }
-        .navbar a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .navbar a:hover {
-            color: orangered;
+        .mode-selector {
+            margin-bottom: 20px;
+            font-size: 1.2em; /* Increased font size */
         }
     </style>
 </head>
 <body>
     <nav class="header">
         <div class="header">
-            <div class="logo"><a href="index.html" class="logo"><span>Jo</span>lan's</a> Portfolio</div>
-            <div class="navbar">
-                <a href="index.html" class="active">Home</a>
-                <a href="about.html" class="active">About</a>
-                <a href="nisu.html" class="active">NISU</a>
-                <a href="cics.html" class="active">CICS</a>
-<a href="mailto:sorillojolanclark@gmail.com" class="active">Message</a>
-            </div>
-
-            
-            <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
+          <div class="logo"><a href="index.html" class="logo"><span>Jo</span>lan's</a> Portfolio</div>
+          <div class="navbar">
+            <a href="index.html" class="active">Home</a>
+            <a href="about.html" class="active">About</a>
+            <a href="nisu.html" class="active">NISU</a>
+            <a href="cics.html" class="active">CICS</a>
+            <a href="mailto:sorillojolanclark@gmail.com" class="active">Message</a>
+          </div>
+    
+          <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
         </div>
-    </nav>
-
-    <div class="container" style="margin-top: 80px;"> <!-- Added margin-top to avoid overlap with the fixed navbar -->
-        <h1>Math Addition Game</h1>
-        <br>
+      </nav>
+      <br> <br>
+      <br> <br>
+      <br> <br>
+      <br> <br>
+      <br>
+    <div class="container">
+        <h1>Math Game</h1>
+        <div class="mode-selector">
+            <label for="mode">Select Difficulty:</label>
+            <select id="mode">
+                <option value="easy">Easy (Addition & Subtraction)</option>
+                <option value="medium">Medium (Multiplication & Division)</option>
+                <option value="hard">Hard (MDAS)</option>
+                <option value="impossible">Impossible (FOIL Method)</option>
+            </select>
+        </div>
         <div id="question"></div>
         <input type="number" id="answer" placeholder="Your answer" />
         <button id="submit">Submit</button>
         <div class="score" id="score">Score: 0</div>
         <br>
-        <p><h2>Dont Use Calculator!</h2></p>
+        <p><strong>Remember: Follow the order of operations!</strong></p>
     </div>
-
 
     <script>
         let score = 0;
         let correctAnswer = 0;
+        let currentMode = 'easy';
+
+        document.getElementById('mode').addEventListener('change', function() {
+            currentMode = this.value;
+            score = 0; // Reset score when changing mode
+            document.getElementById('score').innerText = `Score: ${score}`;
+            generateQuestion(); // Generate a new question
+        });
 
         function generateQuestion() {
-            const num1 = Math.floor(Math.random() * 10);
-            const num2 = Math.floor(Math.random() * 10);
-            correctAnswer = num1 + num2;
-            document.getElementById('question').innerText = `What is ${num1} + ${num2}?`;
+            let question = '';
+            let num1, num2, num3, operator1, operator2;
+
+            switch (currentMode) {
+                case 'easy':
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    operator1 = Math.random() < 0.5 ? '+' : '-';
+                    question = `${num1} ${operator1} ${num2}`;
+                    correctAnswer = eval(question);
+                    break;
+
+                case 'medium':
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    operator1 = Math.random() < 0.5 ? '*' : '/';
+                    question = `${num1} ${operator1} ${num2}`;
+                    correctAnswer = eval(question);
+                    break;
+
+                case 'hard':
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    num3 = Math.floor(Math.random() * 10) + 1;
+                    operator1 = Math.random() < 0.5 ? '+' : '-';
+                    operator2 = Math.random() < 0.5 ? '*' : '/';
+                    question = `${num1} ${operator1} ${num2} ${operator2} ${num3}`;
+                    correctAnswer = eval(question);
+                    break;
+
+                case 'impossible':
+                    const a = Math.floor(Math.random() * 10) + 1;
+                    const b = Math.floor(Math.random() * 10) + 1;
+                    const c = Math.floor(Math.random() * 10) + 1;
+                    const d = Math.floor(Math.random() * 10) + 1;
+                    question = `(${a}x + ${b})(${c}x + ${d})`;
+                    correctAnswer = `${a * c}x^2 + ${a * d + b * c}x + ${b * d}`;
+                    break;
+            }
+
+            document.getElementById('question').innerText = question;
+            document.getElementById('answer').value = '';
         }
 
         document.getElementById('submit').addEventListener('click', function() {
-            const userAnswer = parseInt(document.getElementById('answer').value);
-            if (userAnswer === correctAnswer) {
+            const userAnswer = document.getElementById('answer').value;
+            if (userAnswer == correctAnswer) {
                 score++;
-                document.getElementById('score').innerText = `Score: ${score}`;
-                document.getElementById('answer').value = ''; // Clear input
-                generateQuestion(); // Generate new question
+                alert('Correct!');
             } else {
-                alert(`Wrong answer! Your final score is: ${score}`);
-                score = 0; // Reset score
-                document.getElementById('score').innerText = `Score: ${score}`;
-                generateQuestion(); // Generate new question
+                alert(`Incorrect! The correct answer is: ${correctAnswer}`);
             }
+            document.getElementById('score').innerText = `Score: ${score}`;
+            generateQuestion();
         });
 
-        // Start the game by generating the first question
         generateQuestion();
     </script>
 </body>
