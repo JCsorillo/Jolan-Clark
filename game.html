@@ -161,7 +161,14 @@
             document.getElementById('answer').value = '';
         }
 
-      document.getElementById('submit').addEventListener('click', function() {
+        document.getElementById('submit').addEventListener('click', submitAnswer);
+document.getElementById('answer').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        submitAnswer();
+    }
+});
+
+function submitAnswer() {
     const userAnswer = document.getElementById('answer').value;
     if (userAnswer == correctAnswer) {
         score++;
@@ -172,7 +179,8 @@
     }
     document.getElementById('score').innerText = `Score: ${score}`;
     generateQuestion();
-});
+}
+
         generateQuestion();
     </script>
 
