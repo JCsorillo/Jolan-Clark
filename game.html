@@ -216,7 +216,33 @@ function generateQuestion() {
             question = `${num1} ${operator1} ${num2}`;
             correctAnswer = operator1 === '+' ? num1 + num2 : num1 - num2;
             break;
-        // ... (rest of your generateQuestion function)
+        case 'medium':
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    operator1 = Math.random() < 0.5 ? '*' : '/';
+                    question = `${num1} ${operator1} ${num2}`;
+                    correctAnswer = eval(question);
+                    break;
+
+                case 'hard':
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    num3 = Math.floor(Math.random() * 10) + 1;
+                    operator1 = Math.random() < 0.5 ? '+' : '-';
+                    operator2 = Math.random() < 0.5 ? '*' : '/';
+                    question = `${num1} ${operator1} ${num2} ${operator2} ${num3}`;
+                    correctAnswer = eval(question);
+                    break;
+
+                case 'impossible':
+                    const a = Math.floor(Math.random() * 10) + 1;
+                    const b = Math.floor(Math.random() * 10) + 1;
+                    const c = Math.floor(Math.random() * 10) + 1;
+                    const d = Math.floor(Math.random() * 10) + 1;
+                    question = `(${a}x + ${b})(${c}x + ${d})`;
+                    correctAnswer = `${a * c}x^2 + ${a * d + b * c}x + ${b * d}`;
+                    break;
+            }
     }
 
     document.getElementById('question').innerText = question;
