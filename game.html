@@ -161,18 +161,18 @@
             document.getElementById('answer').value = '';
         }
 
-        document.getElementById('submit').addEventListener('click', function() {
-            const userAnswer = document.getElementById('answer').value;
-            if (userAnswer == correctAnswer) {
-                score++;
-                alert('Correct!');
-            } else {
-                alert(`Incorrect! The correct answer is: ${correctAnswer}`);
-            }
-            document.getElementById('score').innerText = `Score: ${score}`;
-            generateQuestion();
-        });
-
+      document.getElementById('submit').addEventListener('click', function() {
+    const userAnswer = document.getElementById('answer').value;
+    if (userAnswer == correctAnswer) {
+        score++;
+        // Alert for correct answer removed
+    } else {
+        score = 0; // Reset score when the answer is incorrect
+        alert(`Incorrect! The correct answer is: ${correctAnswer}`);
+    }
+    document.getElementById('score').innerText = `Score: ${score}`;
+    generateQuestion();
+});
         generateQuestion();
     </script>
 
