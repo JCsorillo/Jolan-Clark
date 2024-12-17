@@ -59,6 +59,42 @@
             margin-bottom: 20px;
             font-size: 1.2em; /* Increased font size */
         }
+
+        /* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -73,7 +109,7 @@
             <a href="mailto:sorillojolanclark@gmail.com" class="active">Message</a>
           </div>
     
-          <div class="hamburger" onclick="toggleMenu()">
+          <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle Navigation Menu">
             <div class="line"></div>
             <div class="line"></div>
             <div class="line"></div>
@@ -83,8 +119,7 @@
       <br> <br>
       <br> <br>
       <br> <br>
-      <br> <br>
-      <br>
+      <br> 
     <div class="container">
         <h1>Math Game</h1>
         <div class="mode-selector">
@@ -96,6 +131,7 @@
                 <option value="impossible">Impossible (FOIL Method)</option>
             </select>
         </div>
+        <div class="timer" id="timer">Time Left: 0</div>
         <div id="question"></div>
         <input type="number" id="answer" placeholder="Your answer" />
         <button id="submit">Submit</button>
@@ -103,65 +139,110 @@
         <br>
         <p><strong>Remember: Follow the order of operations!</strong></p>
     </div>
+    <br>
+    <div class="container">
+        <div class="timer-controls">
+            <p><strong>Challenge Yourself add a TIMER!</strong></p>
+            <br>
+            <button id="toggleTimer">Start Timer</button>
+        </div>
+    </div>
+
+<!-- Game Over Modal -->
+<div id="gameOverModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Game Over!</h2>
+        <br>
+        <p id="finalScore"></p>
+        <br>
+        <button id="continuePlaying">Continue Playing</button>
+    </div>
+</div>
 
     <script>
-        let score = 0;
-        let correctAnswer = 0;
-        let currentMode = 'easy';
+let score = 0;
+let correctAnswer = 0;
+let currentMode = 'easy';
+let timer;
+let timeLeft;
+let timerActive = false;
 
-        document.getElementById('mode').addEventListener('change', function() {
-            currentMode = this.value;
-            score = 0; // Reset score when changing mode
-            document.getElementById('score').innerText = `Score: ${score}`;
-            generateQuestion(); // Generate a new question
-        });
+document.getElementById('mode').addEventListener('change', function() {
+    currentMode = this.value;
+    score = 0;
+    document.getElementById('score').innerText = `Score: ${score}`;
+    generateQuestion();
+});
 
-        function generateQuestion() {
-            let question = '';
-            let num1, num2, num3, operator1, operator2;
+document.getElementById('toggleTimer').addEventListener('click', function() {
+    timerActive = !timerActive;
+    this.innerText = timerActive ? 'Stop Timer' : 'Start Timer';
+    if (timerActive) {
+        generateQuestion();
+    } else {
+        clearInterval(timer);
+        document.getElementById('timer').innerText = 'Time Left: 0';
+    }
+});
 
-            switch (currentMode) {
-                case 'easy':
-                    num1 = Math.floor(Math.random() * 10) + 1;
-                    num2 = Math.floor(Math.random() * 10) + 1;
-                    operator1 = Math.random() < 0.5 ? '+' : '-';
-                    question = `${num1} ${operator1} ${num2}`;
-                    correctAnswer = eval(question);
-                    break;
+function generateQuestion() {
+    let question = '';
+    let num1, num2, num3, operator1, operator2;
 
-                case 'medium':
-                    num1 = Math.floor(Math.random() * 10) + 1;
-                    num2 = Math.floor(Math.random() * 10) + 1;
-                    operator1 = Math.random() < 0.5 ? '*' : '/';
-                    question = `${num1} ${operator1} ${num2}`;
-                    correctAnswer = eval(question);
-                    break;
+    switch (currentMode) {
+        case 'easy':
+            timeLeft = 5;
+            break;
+        case 'medium':
+            timeLeft = 10;
+            break;
+        case 'hard':
+            timeLeft = 15;
+            break;
+        case 'impossible':
+            timeLeft = 20;
+            break;
+    }
 
-                case 'hard':
-                    num1 = Math.floor(Math.random() * 10) + 1;
-                    num2 = Math.floor(Math.random() * 10) + 1;
-                    num3 = Math.floor(Math.random() * 10) + 1;
-                    operator1 = Math.random() < 0.5 ? '+' : '-';
-                    operator2 = Math.random() < 0.5 ? '*' : '/';
-                    question = `${num1} ${operator1} ${num2} ${operator2} ${num3}`;
-                    correctAnswer = eval(question);
-                    break;
+    if (timerActive) {
+        startTimer();
+    }
 
-                case 'impossible':
-                    const a = Math.floor(Math.random() * 10) + 1;
-                    const b = Math.floor(Math.random() * 10) + 1;
-                    const c = Math.floor(Math.random() * 10) + 1;
-                    const d = Math.floor(Math.random() * 10) + 1;
-                    question = `(${a}x + ${b})(${c}x + ${d})`;
-                    correctAnswer = `${a * c}x^2 + ${a * d + b * c}x + ${b * d}`;
-                    break;
-            }
+    switch (currentMode) {
+        case 'easy':
+            num1 = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * 10) + 1;
+            operator1 = Math.random() < 0.5 ? '+' : '-';
+            question = `${num1} ${operator1} ${num2}`;
+            correctAnswer = operator1 === '+' ? num1 + num2 : num1 - num2;
+            break;
+        // ... (rest of your generateQuestion function)
+    }
 
-            document.getElementById('question').innerText = question;
-            document.getElementById('answer').value = '';
+    document.getElementById('question').innerText = question;
+    document.getElementById('answer').value = '';
+}
+
+function startTimer() {
+    clearInterval(timer);
+    timeLeft = (currentMode === 'easy') ? 5 : (currentMode === 'medium') ? 10 : (currentMode === 'hard') ? 15 : 20;
+    document.getElementById('timer').innerText = `Time Left: ${timeLeft}`;
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').innerText = `Time Left: ${timeLeft}`;
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            timerActive = false; //added to allow the timer to be started again
+            document.getElementById('toggleTimer').innerText = 'Start Timer';
+            document.getElementById('finalScore').innerText = `Your Score: ${score}`;
+            document.getElementById('gameOverModal').style.display = 'block';
+            document.getElementById('score').innerText = `Score: 0`;
         }
+    }, 1000);
+}
 
-        document.getElementById('submit').addEventListener('click', submitAnswer);
+document.getElementById('submit').addEventListener('click', submitAnswer);
 document.getElementById('answer').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         submitAnswer();
@@ -172,23 +253,36 @@ function submitAnswer() {
     const userAnswer = document.getElementById('answer').value;
     if (userAnswer == correctAnswer) {
         score++;
-        // Alert for correct answer removed
     } else {
-        score = 0; // Reset score when the answer is incorrect
-        alert(`Incorrect! The correct answer is: ${correctAnswer}`);
+        clearInterval(timer);
+        timerActive = false; //added to allow the timer to be started again
+        document.getElementById('toggleTimer').innerText = 'Start Timer';
+        document.getElementById('timer').innerText = 'Time Left: 0';
+        document.getElementById('finalScore').innerText = `Your Score: ${score}`;
+        document.getElementById('gameOverModal').style.display = 'block';
+        document.getElementById('score').innerText = `Score: 0`;
+        return;
     }
     document.getElementById('score').innerText = `Score: ${score}`;
     generateQuestion();
 }
 
-        generateQuestion();
-    </script>
+document.getElementById('continuePlaying').addEventListener('click', function() {
+    score = 0;
+    document.getElementById('finalScore').innerText = '';
+    document.getElementById('gameOverModal').style.display = 'none';
+    generateQuestion();
+    document.getElementById('timer').innerText = 'Time Left: 0';
+    if (timerActive) {
+        startTimer();
+    }
+});
 
-        <script>
-            function toggleMenu() {
-                const navbar = document.querySelector('.navbar');
-                navbar.classList.toggle('active');
-            }
-            </script>
+document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('gameOverModal').style.display = 'none';
+});
+
+generateQuestion();
+    </script>
 </body>
 </html>
