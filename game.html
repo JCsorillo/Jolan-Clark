@@ -154,6 +154,7 @@
         <h2>Game Over!</h2>
         <br>
         <p id="finalScore"></p>
+        <p id="correctAnswerText"></p> <!-- New paragraph for the correct answer -->
         <br>
         <button id="continuePlaying">Continue Playing</button>
     </div>
@@ -285,6 +286,7 @@ function submitAnswer() {
         document.getElementById('toggleTimer').innerText = 'Start Timer';
         document.getElementById('timer').innerText = 'Time Left: 0';
         document.getElementById('finalScore').innerText = `Your Score: ${score}`;
+        document.getElementById('correctAnswerText').innerText = `The correct answer was: ${correctAnswer}`; // Set the correct answer text
         document.getElementById('gameOverModal').style.display = 'block';
         document.getElementById('score').innerText = `Score: 0`;
         return;
@@ -292,7 +294,7 @@ function submitAnswer() {
     document.getElementById('score').innerText = `Score: ${score}`;
     generateQuestion();
 }
-
+        
 document.getElementById('continuePlaying').addEventListener('click', function() {
     score = 0;
     document.getElementById('finalScore').innerText = '';
